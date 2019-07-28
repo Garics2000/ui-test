@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<build-type xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" uuid="" xsi:noNamespaceSchemaLocation="https://www.jetbrains.com/teamcity/schemas/2018.1/project-config.xsd">
+  <name>Test metadata demo</name>
+  <description />
+  <settings>
+    <options>
+      <option name="artifactRules" value="build/reports/tests/test =&gt; gradle_test_report.zip" />
+    </options>
+    <parameters>
+      <param name="teamcity.build.serviceMessages.logOriginal" value="true" />
+    </parameters>
+    <build-runners>
+      <runner id="RUNNER_1" name="" type="gradle-runner">
+        <parameters>
+          <param name="teamcity.step.mode" value="default" />
+          <param name="ui.gradleRUnner.gradle.build.file" value="" />
+          <param name="ui.gradleRunner.gradle.tasks.names" value="clean build" />
+          <param name="ui.gradleRunner.gradle.wrapper.path" value="" />
+        </parameters>
+      </runner>
+    </build-runners>
+    <vcs-settings>
+      <vcs-entry-ref root-id="TeamcityTestMetadataDemo_HttpsGithubComJetBrainsTeamcityTestMetadataDemoRefsHeadsMaster" />
+    </vcs-settings>
+    <requirements />
+    <build-triggers />
+    <cleanup />
+  </settings>
+</build-type>
+

@@ -1,0 +1,29 @@
+version: '3'
+services:
+  teamcity-server-pre-installed:
+    image: jetbrains/teamcity-server
+    ports:
+      - "8111:8111"
+    restart: always
+    volumes:
+      - ./tc_data/teamcity_pre_installed/data:/data/teamcity_server/datadir
+      - ./tc_data/teamcity_pre_installed/logs:/opt/teamcity/logs
+    networks:
+      - teamcity-network
+
+  teamcity-agent-pre-installed:
+    image: jetbrains/teamcity-agent
+    restart: always
+    volumes:
+      - ./tc_data/teamcity_pre_installed/data:/data/teamcity_server/datadir
+      - ./tc_data/teamcity_pre_installed/logs:/opt/teamcity/logs
+    environment:
+    - SERVER_URL=teamcity-server-pre-installed:8111
+    # - SERVER_URL=host.docker.internal:8111
+    networks:
+      - teamcity-network
+
+networks:
+  teamcity-network:
+    external: true
+

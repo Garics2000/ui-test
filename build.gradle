@@ -1,0 +1,139 @@
+plugins {
+    id 'java'
+    id 'org.jetbrains.kotlin.jvm' version '1.3.21'
+    id 'org.jetbrains.intellij' version '0.4.9'
+    id 'com.avast.gradle.docker-compose' version '0.7.1'
+    id "io.qameta.allure" version "2.8.1"
+}
+
+repositories {
+    mavenCentral()
+    jcenter()
+    maven {
+        url 'https://dl.bintray.com/palantir/releases'
+    }
+}
+
+dependencies {
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
+    compile 'com.codeborne:selenide:5.2.4'
+    implementation "org.jetbrains.kotlin:kotlin-stdlib:1.3.21"
+    testCompile 'junit:junit:4.12'
+    compile group: 'io.qameta.allure', name: 'allure-selenide', version: '2.12.1'
+    compile group: 'io.qameta.allure', name: 'allure-junit4', version: '2.12.1'
+    compile group: 'io.qameta.allure', name: 'allure-junit4-aspect', version: '2.12.1'
+    compile group: 'org.aspectj', name: 'aspectjweaver', version: '1.9.4'
+}
+
+apply plugin: 'kotlin'
+apply plugin: 'application'
+apply plugin: 'io.qameta.allure'
+group 'com.ie.automation'
+version '1.0-SNAPSHOT'
+
+sourceCompatibility = 1.8
+
+sourceSets {
+    main.kotlin.srcDirs = ['src/main']
+    test.kotlin.srcDirs = ['src/test']
+}
+
+ext {
+    composeFiles = [
+            "clean": "docker-compose.tc.clean.yml",
+            "pre-installed" : "docker-compose.tc.installed.yml"
+    ]
+}
+
+/**
+ * Since Gradle can't run the same task twice during a single build, to be able to run test from all the env config
+ * in one run, the required infrastructure tasks will be created dynamically for each category.
+ */
+composeFiles.each { file_type, compose_file ->
+
+    //noinspection GroovyAssignabilityCheck
+    tasks.create(name: "teamcity-down-${file_type}") {
+        doFirst {
+            dockerCompose.useComposeFiles = [compose_file]
+            composeDownForced.down()
+        }
+        doLast {
+            delete("env/tc_data/teamcity_pre_installed")
+            delete("env/tc_data/teamcity_clean")
+        }
+    }
+
+    //noinspection GroovyAssignabilityCheck
+    tasks.create(name: "teamcity-up-${file_type}") {
+        doFirst {
+            copy {
+                from "env/tc_data_images/teamcity_pre_installed"
+                into "env/tc_data/teamcity_pre_installed"
+            }
+            dockerCompose.useComposeFiles = [compose_file]
+            composeUp.up()
+        }
+    }
+}
+
+test {
+    ignoreFailures = true
+    useJUnit()
+    testLogging {
+        events "passed", "skipped", "failed"
+    }
+}
+
+task TestAll() {
+    description("Runs tests of both types env preconditions categories")
+    dependsOn 'testOnCleanEnv'
+    dependsOn 'testOnPreInstalledEnv'
+    finalizedBy 'allureReport'
+}
+
+task testOnPreInstalledEnv(type: Test) {
+    description("Runs tests on newly installed and not configured TC instance")
+    ignoreFailures = true
+    useJUnit {
+        includeCategories 'com.ie.automation.PreInstalledEnvironment'
+        excludeCategories 'com.ie.automation.CleanEnvironment'
+    }
+}
+
+task testOnCleanEnv(type: Test) {
+    description("Runs tests of pre-configured TC instance")
+    ignoreFailures = true
+    useJUnit {
+        includeCategories 'com.ie.automation.CleanEnvironment'
+        excludeCategories 'com.ie.automation.PreInstalledEnvironment'
+    }
+}
+
+testOnCleanEnv.dependsOn('teamcity-up-clean')
+testOnPreInstalledEnv.dependsOn('teamcity-up-pre-installed')
+
+testOnCleanEnv.finalizedBy('teamcity-down-clean')
+testOnPreInstalledEnv.finalizedBy('teamcity-down-pre-installed')
+
+intellij {
+    version '2019.1'
+}
+
+compileKotlin {
+    kotlinOptions.jvmTarget = "1.8"
+}
+
+compileTestKotlin {
+    kotlinOptions.jvmTarget = "1.8"
+}
+
+dockerCompose() {
+    dockerComposeWorkingDirectory = "env/"
+    removeVolumes = true
+}
+
+allure {
+    version = '2.12.1'
+    autoconfigure = true
+    aspectjweaver = false
+}

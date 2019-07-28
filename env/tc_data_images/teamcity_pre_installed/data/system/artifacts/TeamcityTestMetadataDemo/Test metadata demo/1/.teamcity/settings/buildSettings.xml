@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<build-type xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://www.jetbrains.com/teamcity/schemas/2018.1/project-config.xsd">
+  <name>Test metadata demo</name>
+  <description />
+  <settings>
+    <options>
+      <option name="artifactRules" value="build/reports/tests/test =&gt; gradle_test_report.zip" />
+    </options>
+    <parameters>
+      <param name="teamcity.build.serviceMessages.logOriginal" value="true" />
+    </parameters>
+    <build-runners>
+      <runner id="RUNNER_1" name="" type="gradle-runner">
+        <parameters>
+          <param name="teamcity.coverage.emma.include.source" value="true" />
+          <param name="teamcity.coverage.emma.instr.parameters" value="-ix -*Test*" />
+          <param name="teamcity.coverage.idea.includePatterns" value="*" />
+          <param name="teamcity.coverage.jacoco.patterns" value="+:*" />
+          <param name="teamcity.step.mode" value="default" />
+          <param name="teamcity.tool.jacoco" value="%teamcity.tool.jacoco.DEFAULT%" />
+          <param name="ui.gradleRUnner.gradle.build.file" value="" />
+          <param name="ui.gradleRunner.gradle.tasks.names" value="clean build" />
+          <param name="ui.gradleRunner.gradle.wrapper.path" value="" />
+          <param name="ui.gradleRunner.gradle.wrapper.useWrapper" value="true" />
+        </parameters>
+      </runner>
+    </build-runners>
+    <vcs-settings>
+      <vcs-entry-ref root-id="TeamcityTestMetadataDemo_HttpsGithubComJetBrainsTeamcityTestMetadataDemoRefsHeadsMaster" />
+    </vcs-settings>
+    <requirements />
+    <build-triggers />
+    <cleanup />
+  </settings>
+</build-type>
+

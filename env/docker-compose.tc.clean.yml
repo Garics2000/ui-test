@@ -1,0 +1,27 @@
+version: '3'
+services:
+  teamcity-server-clean:
+    image: jetbrains/teamcity-server
+    ports:
+      - "8111:8111"
+    restart: always
+    volumes:
+      - ./tc_data/teamcity_clean/data:/data/teamcity_server/datadir
+      - ./tc_data/teamcity_clean/logs:/opt/teamcity/logs
+    networks:
+      - teamcity-network
+
+  teamcity-agent-clean:
+    image: jetbrains/teamcity-agent
+    restart: always
+    volumes:
+      - ./tc_data/teamcity_clean/data:/data/teamcity_server/datadir
+      - ./tc_data/teamcity_clean/logs:/opt/teamcity/logs
+    environment:
+      - SERVER_URL=teamcity-server-clean:8111
+    networks:
+      - teamcity-network
+
+networks:
+  teamcity-network:
+    external: true
