@@ -3,6 +3,7 @@ package com.ie.automation
 import com.codeborne.selenide.junit.TextReport
 import com.codeborne.selenide.logevents.SelenideLogger.addListener
 import com.codeborne.selenide.logevents.SelenideLogger.removeListener
+import com.ie.test.core.Configuration
 import com.ie.test.core.Driver
 import io.qameta.allure.selenide.AllureSelenide
 import org.junit.AfterClass
@@ -19,12 +20,13 @@ abstract class BaseTest {
     var report: TestRule = TextReport().onFailedTest(true).onSucceededTest(true)
 
     companion object {
+        val browser = Configuration["browser_name"]
+        val version = Configuration["browser_version"]
 
         @BeforeClass
         @JvmStatic
-        @Suppress("DelegatingClassLoader","error")
         fun beforeClass() {
-            Driver.setUp("chrome", "latest")
+            Driver.setUp(browser, version)
             addListener("allure", AllureSelenide())
             addListener("AllureSelenide",
             AllureSelenide().screenshots(true).savePageSource(false))
