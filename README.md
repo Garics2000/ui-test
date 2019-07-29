@@ -13,13 +13,13 @@ Every test supposed to be run against one of the two types of test environment: 
 already pre-installed and pre-configured system having snapshot of some data to be used in test.
 Both environments test execution is managed by docker containers, gradle tasks and categories annotation.
 
-###Limitations of the solution
+### Limitations of the solution
 - No support of parallel test execution
 - No support of multi-platform (themes) locators
 
 ## How to run tests
 
-###Prerequisites
+### Prerequisites
 **Should be installed/presented on test machine**:
 - Docker with docker-compose tool. The solution is tested on docker docker engine with limit resources for this project is 4GB of RAM with 2GB Swap and 4 cores of CPU.
 - Gradle
