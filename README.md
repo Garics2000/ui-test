@@ -63,7 +63,7 @@ gradle allureServ
 ```
 Allure test report will be opened in browser. For each test available Selenide steps log. 
 Screenshots are presented only for failed tests.
-![allure-report-example](images/allure-report-example.png?raw=true "Live test progress view in Selenoid") 
+![allure-report-example](images/allure-report-example.png?raw=true "Allure report example") 
 
 
 
