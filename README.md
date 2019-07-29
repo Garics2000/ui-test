@@ -40,14 +40,14 @@ docker-compose -f docker-compose.selenoid.yml up
 Once it finished, selenoid server with selenoid-ui tools should be up and running with attached chrome browser instance. To verify this check that selenoid url http://selenoid:4444/wd/hub 
 or http://localhost:4444/wd/hub (depends from host OS) is accessible and chrome browser is attached. Make sure that available host is specified in **config.properties** file as hub_url.
 
-### 3. For MacOS users only
+#### 3. For MacOS users only
 MacOS has some network limitations applicable to docker containers. Particularly it doesn't allow to resolve localhost address from  containers inside.
 Use special docker DNS host.docker.internal to resolve localhost in such cases. See https://docs.docker.com/docker-for-mac/networking/ for more details.
 Make sure that app_host property in **config.properties** file has the following value:
 ```
 base_url=http://host.docker.internal:8111
 ```
-### 4. Run the tests
+#### 4. Run the tests
 From ${PROJECT_HOME} directory run the following command:
 ```
 gradle clean testAll
@@ -56,7 +56,7 @@ gradle clean testAll
 There is possible to view the test progress in "live" mode via **Selenoid UI**:
 ![live-selenoid](images/selenoid-live-view.gif?raw=true "Live test progress view in Selenoid") 
 
-### 5. Get the test report
+#### 5. Get the test report
 From ${PROJECT_HOME} directory run the following command:
 ```
 gradle allureServ
