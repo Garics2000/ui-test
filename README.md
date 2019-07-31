@@ -53,7 +53,7 @@ From ${PROJECT_HOME} directory run the following command:
 gradle clean testAll
 ```
 
-There is possible to view the test progress in "live" mode via **Selenoid UI**:
+There is possible to view the test progress in "live" mode via **Selenoid UI** (http://localhost:8080):
 ![live-selenoid](images/selenoid-live-view.gif?raw=true "Live test progress view in Selenoid") 
 
 #### 5. Get the test report
