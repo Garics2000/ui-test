@@ -22,7 +22,6 @@ Both environments test execution is managed by docker containers, gradle tasks a
 ### Prerequisites
 **Should be installed/presented on test machine**:
 - Docker with docker-compose tool. The solution is tested on docker engine with limit resources for this project is 4GB of RAM with 2GB Swap and 4 cores of CPU.
-- Gradle
 - Java version >= 1.8
 - Cloned repository with project code
 
@@ -50,7 +49,7 @@ base_url=http://host.docker.internal:8111
 #### 4. Run the tests
 From ${PROJECT_HOME} directory run the following command:
 ```
-gradle clean testAll
+gradlew clean testAll
 ```
 
 There is possible to view the test progress in "live" mode via **Selenoid UI** - http://localhost:8080:
@@ -59,7 +58,7 @@ There is possible to view the test progress in "live" mode via **Selenoid UI** -
 #### 5. Get the test report
 From ${PROJECT_HOME} directory run the following command:
 ```
-gradle allureServ
+gradlew allureServ
 ```
 Allure test report will be opened in browser. There is available Selenide steps log for each test. 
 Screenshots are presented only for failed tests.
