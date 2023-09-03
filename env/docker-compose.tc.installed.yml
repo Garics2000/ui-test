@@ -1,7 +1,8 @@
-version: '3'
+version: '3.9'
 services:
   teamcity-server-pre-installed:
-    image: jetbrains/teamcity-server
+    image: jetbrains/teamcity-server:2019.1.1
+    platform: linux/amd64
     ports:
       - "8111:8111"
     restart: always
@@ -12,7 +13,8 @@ services:
       - teamcity-network
 
   teamcity-agent-pre-installed:
-    image: jetbrains/teamcity-agent
+    image: jetbrains/teamcity-agent:2019.1.1
+    platform: linux/amd64
     restart: always
     volumes:
       - ./tc_data/teamcity_pre_installed/data:/data/teamcity_server/datadir

@@ -8,21 +8,21 @@ import org.junit.Test
 import org.junit.experimental.categories.Category
 
 @Category(PreInstalledEnvironment::class)
-class BuildWorkflowTest: BaseTest() {
+class BuildWorkflowTest : BaseTest() {
 
     @Test
-    @Description ("Trigger the build and verify the results")
+    @Description("Trigger the build and verify the results")
     fun runBuildAndCheckResultsTest() {
         val dashboardPage = DashboardPage()
         LoginPage().doAdminLogin()
 
         AgentsPage().navigate()
-                    .authorize()
-                    .waitForConnectedAgent()
+            .authorize()
+            .waitForConnectedAgent()
 
         dashboardPage.navigate()
-                     .getProject(dashboardPage.testProjectName)
-                     .triggerBuild()
-                     .expectLatestBuildStatus(dashboardPage.latestBuildStatus)
+            .getProject(DashboardPage.TEST_PROJECT_NAME)
+            .triggerBuild()
+            .expectLatestBuildStatus(DashboardPage.LATEST_BUILD_STATUS)
     }
 }

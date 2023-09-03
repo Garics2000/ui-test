@@ -8,7 +8,7 @@ import org.junit.Test
 import org.junit.experimental.categories.Category
 
 @Category(PreInstalledEnvironment::class)
-class UserManagementTest: BaseTest() {
+class UserManagementTest : BaseTest() {
 
     @Test
     @Description("Create a user with default access to project")
@@ -22,8 +22,8 @@ class UserManagementTest: BaseTest() {
         loginPage.doAdminLogin()
 
         userManagementPage.navigate()
-                          .createUser(testLogin,testPass)
-                          .doLogin(testLogin, testPass, dashboardPage)
-                          .getProject(dashboardPage.testProjectName)
+            .createUser(testLogin, testPass)
+            .doLogin(testLogin, testPass, dashboardPage)
+            .getProject(DashboardPage.TEST_PROJECT_NAME)
     }
 }

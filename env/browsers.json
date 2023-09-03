@@ -6,6 +6,12 @@
         "image": "selenoid/chrome",
         "port": "4444",
         "tmpfs": {"/tmp":"size=512m"}
+      },
+      "91.0": {
+        "image": "dumbdumbych/selenium_vnc_chrome_arm64:91.0.b",
+        "port": "4444",
+        "path": "/",
+        "privileged": true
       }
     }
   }

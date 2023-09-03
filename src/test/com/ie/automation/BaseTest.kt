@@ -20,16 +20,17 @@ abstract class BaseTest {
     var report: TestRule = TextReport().onFailedTest(true).onSucceededTest(true)
 
     companion object {
-        val browser = Configuration["browser_name"]
-        val version = Configuration["browser_version"]
+        private val browser = Configuration["browser_name"]
+        private val version = Configuration["browser_version"]
 
         @BeforeClass
         @JvmStatic
         fun beforeClass() {
             Driver.setUp(browser, version)
             addListener("allure", AllureSelenide())
-            addListener("AllureSelenide",
-            AllureSelenide().screenshots(true).savePageSource(false))
+            addListener(
+                "AllureSelenide", AllureSelenide().screenshots(true).savePageSource(false)
+            )
         }
 
         @AfterClass
@@ -38,6 +39,5 @@ abstract class BaseTest {
             Driver.tearDown()
             removeListener<AllureSelenide>("allure")
         }
-
     }
 }

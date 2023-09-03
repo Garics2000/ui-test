@@ -7,7 +7,7 @@ import org.junit.*
 import org.junit.experimental.categories.Category
 
 @Category(CleanEnvironment::class)
-class SetupWorkflowTest: BaseTest() {
+class SetupWorkflowTest : BaseTest() {
 
     @Test
     @Description("Basic installation workflow test")
@@ -16,10 +16,10 @@ class SetupWorkflowTest: BaseTest() {
         val profileSettingsPage = ProfileSettingsPage()
 
         installPage.navigate()
-                   .startWizard()
-                   .configureDb()
-                   .acceptLicenceAgreement()
-                   .createAdminAccount()
+            .startWizard()
+            .configureDb()
+            .acceptLicenceAgreement()
+            .createAdminAccount()
         profileSettingsPage.assertUserIsLoggedIn()
     }
 }

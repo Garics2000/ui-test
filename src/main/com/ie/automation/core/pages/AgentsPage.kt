@@ -9,7 +9,6 @@ import org.openqa.selenium.By
 import java.time.LocalDate
 
 class AgentsPage : Page() {
-
     val pageURL = "agents.html"
 
     val commentFieldLayers: ElementsCollection = ss(".commentTextArea")
@@ -21,12 +20,12 @@ class AgentsPage : Page() {
     val connectedCounter: SelenideElement = s(By.xpath("//*[@id='registeredAgents_Tab']/p[1]/span"))
     val disconnectedCounter: SelenideElement = s(By.xpath("//*[@id='unregisteredAgents_Tab']/p[1]/span"))
     val connectedStatus: SelenideElement = s(By.ByXPath("//span[text()='Connected']"))
-    val unauthorizedCounter:SelenideElement = s(By.xpath("//*[@id='unauthorizedAgents_Tab']/p[1]/span"))
+    val unauthorizedCounter: SelenideElement = s(By.xpath("//*[@id='unauthorizedAgents_Tab']/p[1]/span"))
     val authorizationDialog: SelenideElement = s("#changeAuthorizeStatusTitle")
     val removeAgentButton: SelenideElement = s(By.ByXPath("//*[@id='removeAgentForm']/input[1]"))
 
     override fun navigate(): AgentsPage {
-        Selenide.open(baseUrl+pageURL)
+        Selenide.open(baseUrl + pageURL)
         return this
     }
 
@@ -40,20 +39,20 @@ class AgentsPage : Page() {
 
     fun authorize(): AgentsPage {
         val unauthorizedNum = countUnauthorized()
-        if(unauthorizedNum > 1 || countDisconnected() > 1) {
+        if (unauthorizedNum > 1 || countDisconnected() > 1) {
             removeAgent()
         }
 
-        if(unauthorizedNum > 0 ) {
-           unauthorizedTab.click()
-           val authButtons = authButtons.shouldHave(CollectionCondition.sizeGreaterThan(0))
+        if (unauthorizedNum > 0) {
+            unauthorizedTab.click()
+            val authButtons = authButtons.shouldHave(CollectionCondition.sizeGreaterThan(0))
 
-           for(button in authButtons) {
-               button.should(exist).click()
-               authorizationDialog.should(exist)
-               commentFieldLayers.filter(visible).get(0).setValue("AT session: " + LocalDate.now())
-               submitButtonLayers.filter(visible).get(0).click()
-           }
+            for (button in authButtons) {
+                button.should(exist).click()
+                authorizationDialog.should(exist)
+                commentFieldLayers.filter(visible).get(0).setValue("AT session: " + LocalDate.now())
+                submitButtonLayers.filter(visible).get(0).click()
+            }
         }
         return this
     }
@@ -67,7 +66,7 @@ class AgentsPage : Page() {
 
     private fun removeAgent() {
         unauthorizedTab.click()
-        if(!connectedStatus.exists()) {
+        if (!connectedStatus.exists()) {
             val link = agentsLinks[0].should(exist).getAttribute("href")
             Selenide.open(link)
             removeAgentButton.should(exist).click()
@@ -75,5 +74,4 @@ class AgentsPage : Page() {
             this.navigate()
         }
     }
-
 }

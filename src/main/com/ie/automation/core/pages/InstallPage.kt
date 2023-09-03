@@ -1,15 +1,16 @@
 package com.ie.automation.core.pages
+
 import com.codeborne.selenide.Condition.*
 import com.codeborne.selenide.Selenide.open
 import com.codeborne.selenide.SelenideElement
 import com.ie.test.core.Configuration
 
-
 class InstallPage : Page() {
-
-    val welcomeLabel: String = "TeamCity First Start"
-    val dbSetupLabel: String = "Database Connection Setup"
-    val createAdminAccountLabel: String = "Create Administrator Account"
+    companion object {
+        const val WELCOME_LABEL = "TeamCity First Start"
+        const val DB_SETUP_LABEL = "Database Connection Setup"
+        const val CREATE_ADMIN_ACCOUNT_LABEL = "Create Administrator Account"
+    }
 
     val pageHeader: SelenideElement = s("h1")
     val proceedButton: SelenideElement = s("#proceedButton")
@@ -26,39 +27,44 @@ class InstallPage : Page() {
         return this
     }
 
-     fun startWizard(): InstallPage {
-         pageHeader.shouldHave(text(welcomeLabel))
-         proceedButton.click()
-         return this
-     }
+    fun startWizard(): InstallPage {
+        pageHeader.shouldHave(text(WELCOME_LABEL))
+        proceedButton.click()
+        return this
+    }
 
-     fun configureDb() : InstallPage {
-         pageHeader.shouldHave(text(dbSetupLabel))
-         proceedButton.click()
-         waitForRequestDone()
-         return this
-     }
+    fun configureDb(): InstallPage {
+        doActionAndAwaitRequests {
+            pageHeader.shouldHave(text(DB_SETUP_LABEL))
+            proceedButton.click()
+        }
 
-     fun acceptLicenceAgreement() : InstallPage {
-         submitButton.waitUntil(exist,initWait)
-         submitButton.shouldBe(disabled)
-         acceptCheckbox.scrollIntoView(true)
-         submitButton.scrollIntoView(true)
-         acceptCheckbox.setSelected(true)
-         submitButton.shouldBe(visible, enabled)
-         submitButton.click()
-         waitForRequestDone()
-         return this
-     }
+        return this
+    }
 
-     fun createAdminAccount() {
-         val adminLogin = Configuration.get("admin_login")
-         val adminPassword = Configuration.get("admin_password")
-         accountHeader.shouldHave(text(createAdminAccountLabel))
-         loginField.setValue(adminLogin)
-         passwordField.setValue(adminPassword)
-         confirmPasswordField.setValue(adminPassword)
-         loginButton.click()
-         waitForRequestDone()
-     }
+    fun acceptLicenceAgreement(): InstallPage {
+        doActionAndAwaitRequests {
+            submitButton.waitUntil(exist, initWait)
+            submitButton.shouldBe(disabled)
+            acceptCheckbox.scrollIntoView(true)
+            submitButton.scrollIntoView(true)
+            acceptCheckbox.setSelected(true)
+            submitButton.shouldBe(visible, enabled)
+            submitButton.click()
+        }
+
+        return this
+    }
+
+    fun createAdminAccount() {
+        val adminLogin = Configuration.get("admin_login")
+        val adminPassword = Configuration.get("admin_password")
+        doActionAndAwaitRequests {
+            accountHeader.shouldHave(text(CREATE_ADMIN_ACCOUNT_LABEL))
+            loginField.value = adminLogin
+            passwordField.value = adminPassword
+            confirmPasswordField.value = adminPassword
+            loginButton.click()
+        }
+    }
 }

@@ -49,7 +49,7 @@ base_url=http://host.docker.internal:8111
 #### 4. Run the tests
 From ${PROJECT_HOME} directory run the following command:
 ```
-gradlew clean testAll
+./gradlew clean testAll
 ```
 
 There is possible to view the test progress in "live" mode via **Selenoid UI** - http://localhost:8080:
@@ -58,7 +58,7 @@ There is possible to view the test progress in "live" mode via **Selenoid UI** -
 #### 5. Get the test report
 From ${PROJECT_HOME} directory run the following command:
 ```
-gradlew allureServ
+./gradlew allureServ
 ```
 Allure test report will be opened in browser. There is available Selenide steps log for each test. 
 Screenshots are presented only for failed tests.

@@ -6,15 +6,16 @@ import com.ie.test.core.Configuration
 import org.openqa.selenium.By
 
 class DashboardPage : Page() {
+    private val pageURL = "overview.html"
+    private val buildWait = Configuration["build_wait"]
 
-    val pageURL = "overview.html"
-    val buildWait = Configuration["build_wait"]
+    companion object {
+        const val TEST_PROJECT_NAME = "Teamcity Test Metadata Demo"
+        const val LATEST_BUILD_STATUS = "Tests failed: 2, passed: 2"
+    }
 
-    val testProjectName: String = "Teamcity Test Metadata Demo"
-    val latestBuildStatus = "Tests failed: 2, passed: 2"
-
-    val buildStatusesList: ElementsCollection = ss(".oneLineStatus")
-    val triggerBuildButton: SelenideElement = s(Selectors.ByText("Run"))
+    private val buildStatusesList: ElementsCollection = ss(".oneLineStatus")
+    private val triggerBuildButton: SelenideElement = s(Selectors.ByText("Run"))
 
     override fun navigate(): DashboardPage {
         Selenide.open(baseUrl + pageURL)
@@ -23,17 +24,16 @@ class DashboardPage : Page() {
 
     fun getProject(name: String): DashboardPage {
         this.navigate()
-        s(By.linkText(name)).waitUntil(Condition.exist,initWait)
-        return this;
+        s(By.linkText(name)).waitUntil(Condition.exist, initWait)
+        return this
     }
 
-    fun triggerBuild() : DashboardPage {
+    fun triggerBuild(): DashboardPage {
         triggerBuildButton.click()
         return this
     }
 
     fun expectLatestBuildStatus(status: String) {
-        buildStatusesList[0].waitUntil(text(status),buildWait.toLong(), 5000)
+        buildStatusesList[0].waitUntil(text(status), buildWait.toLong(), 5000)
     }
-
 }
